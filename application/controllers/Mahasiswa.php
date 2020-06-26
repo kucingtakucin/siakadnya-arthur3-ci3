@@ -17,9 +17,33 @@ class Mahasiswa extends CI_Controller {
 	 * @return void
 	 */
 	public function index(): void {
+		$this->load->library('pagination');
+		$config['base_url'] = base_url() . 'Mahasiswa/index';
+		$config['total_rows'] = $this->MahasiswaModel->count();
+		$config['per_page'] = 12;
+		$config['full_tag_open'] = '<nav aria-label="Page navigation example"><ul class="pagination pagination-lg m-auto align-items-center justify-content-center">';
+		$config['full_tag_close'] = '</ul></nav>';
+		$config['first_link'] = 'first';
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'last';
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&raquo';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&laquo';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['attributes'] = ['class' => 'page-link'];
+		$this->pagination->initialize($config);
 		$data = [
 			'title' => 'Daftar Mahasiswa',
-			'students' => $this->MahasiswaModel->all()
+			'students' => $this->MahasiswaModel->all($config['per_page'], $this->uri->segment(3))
 		];
 		if (isset($_POST['insert']) || isset($_POST['update'])):
 			if ($this->form_validation->run() === FALSE):

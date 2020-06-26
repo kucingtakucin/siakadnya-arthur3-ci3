@@ -84,11 +84,11 @@
 				</thead>
 				<tbody>
 				<?php
-				$i = 1;
+				$i = $this->uri->segment(3);
 				/** @var array $students */
 				foreach ($students as $student):?>
 					<tr>
-						<th scope="row"><?= $i ?></th>
+						<th scope="row"><?= ++$i ?></th>
 						<td><img src="<?= base_url() ?>assets/img/<?= $student['foto'] ?>" alt="<?= $student['nama']?>" width="100" class="img-fluid"></td>
 						<td><p><?= $student['nama'] ?></p></td>
 						<td><p><?= $student['nim'] ?></p></td>
@@ -100,9 +100,10 @@
 							<h5><button type="button" class="btn badge badge-danger mt-2 delete" data-toggle="modal" data-target="#deleteModal" data-id="<?= $student['id'] ?>" data-baseurl="<?= base_url() ?>">Delete</button></h5>
 						</td>
 					</tr>
-					<?php $i++; endforeach ?>
+					<?php endforeach ?>
 				</tbody>
 			</table>
+			<?= $this->pagination->create_links() ?>
 		</section>
 	</div>
 
