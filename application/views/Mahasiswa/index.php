@@ -1,17 +1,39 @@
 <main>
 	<div class="container pt-5">
-<!--		<div class="row">-->
-<!--			<div class="col-lg-12">-->
-<!--				--><?php //use Core\Helper\Flasher;
-//				Flasher::get() ?>
-<!--			</div>-->
-<!--		</div>-->
+		<div class="row">
+			<div class="col-lg-6 m-auto">
+				<?php if (validation_errors()): ?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<?= validation_errors() ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<?php endif ?>
+				<?php if ($this->session->flashdata('insert')): ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Data Mahasiswa <strong><?= $this->session->flashdata('insert') ?></strong> ditambahkan!
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<?php endif ?>
+				<?php if ($this->session->flashdata('delete')): ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Data Mahasiswa <strong><?= $this->session->flashdata('delete') ?></strong> dihapus!
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<?php endif ?>
+			</div>
+		</div>
 		<section id="header" class="mb-3">
 			<h1 class="display-4 text-center font-weight-bold">
 				Daftar Mahasiswa
 			</h1>
 <!--			<h4 class="text-muted mt-0 mb-3 text-center">Selamat datang, --><?//= $_SESSION['username'] ?><!--. Status: --><?php //if ($_SESSION['role'] === '0'): ?><!--User--><?php //else: ?><!--Admin--><?php //endif ?><!--</h4>-->
-			<button type="button" class="btn btn-primary d-block m-auto font-weight-bold insert" data-toggle="modal" data-target="#formModal">
+			<button type="button" class="btn btn-primary d-block m-auto font-weight-bold insert" data-toggle="modal" data-target="#insertModal">
 				Insert
 			</button>
 		</section>
@@ -56,86 +78,86 @@
 						<td><p><?= $student['angkatan'] ?></p></td>
 						<td class="d-flex flex-column align-items-center justify-content-center">
 							<h5><button type="button" class="btn badge badge-info mb-2 mt-3 detail" data-toggle="modal" data-target="#detailModal" data-id="<?= $student['id'] ?>">Detail</button></h5>
-							<h5><a href="Mahasiswa/update/<?= $student['id'] ?>" class="badge badge-warning mt-2 mb-2 update" data-toggle="modal" data-target="#formModal" data-id="<?= $student['id'] ?>">Update</a></h5>
-							<h5><button type="button" class="btn badge badge-danger mt-2 delete" data-toggle="modal" data-target="#deleteModal" data-id="<?= $student['id'] ?>">Delete</button></h5>
+							<h5><a href="Mahasiswa/update/<?= $student['id'] ?>" class="badge badge-warning mt-2 mb-2 update" data-toggle="modal" data-target="#updateModal" data-id="<?= $student['id'] ?>">Update</a></h5>
+							<h5><button type="button" class="btn badge badge-danger mt-2 delete" data-toggle="modal" data-target="#deleteModal<?= $i ?>" data-id="<?= $student['id'] ?>">Delete</button></h5>
 						</td>
 					</tr>
+
+					<!--  Delete Modal  -->
+					<div class="modal fade" id="deleteModal<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModal<?= $i ?>Label" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="deleteModal<?= $i ?>Label">Delete Data Mahasiswa</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									Apakah kamu yakin untuk menghapus data?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<a href="<?= base_url() ?>Mahasiswa/delete/<?= $student['id'] ?>" class="btn btn-primary">Delete Data</a>
+								</div>
+							</div>
+						</div>
+					</div>
 					<?php $i++; endforeach ?>
 				</tbody>
 			</table>
 		</section>
 	</div>
 
-	<!-- Insert & Update Modal -->
-<!--	<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">-->
-<!--		<div class="modal-dialog">-->
-<!--			<div class="modal-content">-->
-<!--				<form action="--><?//= BASE_URL ?><!--Mahasiswa/insert" method="post" enctype="multipart/form-data">-->
-<!--					<div class="modal-header">-->
-<!--						<h5 class="modal-title" id="formModalLabel">Insert Data Mahasiswa</h5>-->
-<!--						<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--							<span aria-hidden="true">&times;</span>-->
-<!--						</button>-->
-<!--					</div>-->
-<!--					<div class="modal-body">-->
-<!--						<div class="form-group">-->
-<!--							<label for="nim">NIM</label>-->
-<!--							<input type="text" class="form-control" maxlength="8" required id="nim" autocomplete="off" name="nim">-->
-<!--						</div>-->
-<!--						<div class="form-group">-->
-<!--							<label for="nama">Nama</label>-->
-<!--							<input type="text" class="form-control" maxlength="30" required id="nama" autocomplete="off" name="nama">-->
-<!--						</div>-->
-<!--						<div class="form-group">-->
-<!--							<label for="jurusan">Jurusan</label>-->
-<!--							<select class="form-control custom-select" id="jurusan" required autocomplete="off" name="jurusan">-->
-<!--								<option selected></option>-->
-<!--								<option value="Teknik Elektro">Teknik Elektro</option>-->
-<!--								<option value="Teknik Informatika">Teknik Informatika</option>-->
-<!--								<option value="Teknik Mesin">Teknik Mesin</option>-->
-<!--								<option value="Teknik Industri">Teknik Industri</option>-->
-<!--								<option value="Teknik Sipil">Teknik Sipil</option>-->
-<!--								<option value="Teknik Lingkungan">Teknik Lingkungan</option>-->
-<!--							</select>-->
-<!--						</div>-->
-<!--						<div class="form-group">-->
-<!--							<label for="angkatan">Angkatan</label>-->
-<!--							<input type="number" class="form-control" min="0" max="3000" maxlength="4" required id="angkatan" autocomplete="off" name="angkatan">-->
-<!--						</div>-->
-<!--						<div class="custom-file">-->
-<!--							<label for="foto">Foto</label>-->
-<!--							<input type="file" class="form-control-file" required id="foto" name="foto">-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="modal-footer">-->
-<!--						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--						<button type="submit" class="btn btn-primary">Insert Data</button>-->
-<!--					</div>-->
-<!--				</form>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
-
-	<!--  Delete Modal  -->
-<!--	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">-->
-<!--		<div class="modal-dialog">-->
-<!--			<div class="modal-content">-->
-<!--				<div class="modal-header">-->
-<!--					<h5 class="modal-title" id="deleteModalLabel">Delete Data Mahasiswa</h5>-->
-<!--					<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--						<span aria-hidden="true">&times;</span>-->
-<!--					</button>-->
-<!--				</div>-->
-<!--				<div class="modal-body">-->
-<!--					Apakah kamu yakin untuk menghapus data?-->
-<!--				</div>-->
-<!--				<div class="modal-footer">-->
-<!--					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--					<a href="--><?//= BASE_URL ?><!--Mahasiswa/delete" class="btn btn-primary">Delete Data</a>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
+	<!-- Insert Modal -->
+	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<?= form_open('Mahasiswa/index') ?>
+					<div class="modal-header">
+						<h5 class="modal-title" id="insertModalLabel">Insert Data Mahasiswa</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="nim">NIM</label>
+							<input type="text" class="form-control" maxlength="8" id="nim" autocomplete="off" name="nim">
+						</div>
+						<div class="form-group">
+							<label for="nama">Nama</label>
+							<input type="text" class="form-control" maxlength="30" id="nama" autocomplete="off" name="nama">
+						</div>
+						<div class="form-group">
+							<label for="jurusan">Jurusan</label>
+							<select class="form-control custom-select" id="jurusan" autocomplete="off" name="jurusan">
+								<option selected></option>
+								<option value="Teknik Elektro">Teknik Elektro</option>
+								<option value="Teknik Informatika">Teknik Informatika</option>
+								<option value="Teknik Mesin">Teknik Mesin</option>
+								<option value="Teknik Industri">Teknik Industri</option>
+								<option value="Teknik Sipil">Teknik Sipil</option>
+								<option value="Teknik Lingkungan">Teknik Lingkungan</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="angkatan">Angkatan</label>
+							<input type="text" class="form-control" min="0" max="3000" maxlength="4" id="angkatan" autocomplete="off" name="angkatan">
+						</div>
+						<div class="custom-file">
+							<label for="foto">Foto</label>
+							<input type="file" class="form-control-file" id="foto" name="foto">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Insert Data</button>
+					</div>
+				<?= form_close() ?>
+			</div>
+		</div>
+	</div>
 
 	<!--  Detail Modal  -->
 <!--	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">-->

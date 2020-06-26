@@ -1,4 +1,4 @@
-<main
+<main>
 	<div class="container pt-5">
 		<div class="jumbotron rounded-lg shadow bg-dark text-white d-flex flex-column align-items-center justify-content-center">
 			<h1 class="display-4 font-weight-bold">Selamat datang di Website kami</h1>
