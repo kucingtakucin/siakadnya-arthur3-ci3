@@ -50,14 +50,14 @@
 						<div class="input-group mb-3">
 							<input type="text" id="keyword" name="keyword" autocomplete="off" class="form-control" placeholder="Cari Mahasiswa" aria-label="Cari Mahasiswa" aria-describedby="button-addon2">
 							<div class="input-group-append">
-								<button class="btn btn-outline-success" type="submit" id="search" name="search">Search</button>
+								<input class="btn btn-outline-success" type="submit" id="search" name="search" value="Search">
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-7">
+				<div class="col-lg-9">
 					<?php if(empty($students)): ?>
 					<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						Data yang kamu cari tidak ditemukan!
@@ -65,6 +65,13 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+					<?php else: ?>
+						<div class="alert alert-info alert-dismissible fade show" role="alert">
+							Results: <?= /** @var int $total_rows */ $total_rows ?> data
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 					<?php endif ?>
 				</div>
 			</div>
@@ -150,7 +157,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" name="insert">Insert Data</button>
+						<input type="submit" class="btn btn-primary" name="insert" value="Insert">
 					</div>
 				<?= form_close() ?>
 			</div>
@@ -203,7 +210,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" name="update">Update Data</button>
+						<input type="submit" class="btn btn-primary" name="update" value="Update">
 					</div>
 				<?= form_close() ?>
 			</div>

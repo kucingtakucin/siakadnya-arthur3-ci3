@@ -3,9 +3,18 @@
 class MahasiswaModel extends CI_Model {
 
 	/**
+	 * @param $limit
+	 * @param $start
+	 * @param null $keyword
 	 * @return array
 	 */
-	public function all($limit, $start): array {
+	public function all($limit, $start, $keyword = null): array {
+		if ($keyword):
+			$this->db->like('nama', $this->input->post('keyword'), true);
+			$this->db->or_like('nim', $this->input->post('keyword'), true);
+			$this->db->or_like('jurusan', $this->input->post('keyword'), true);
+			$this->db->or_like('angkatan', $this->input->post('keyword'), true);
+		endif;
 		return $this->db->get('mahasiswa', $limit, $start)->result_array();
 	}
 
@@ -65,10 +74,6 @@ class MahasiswaModel extends CI_Model {
 		$this->db->or_like('jurusan', $this->input->post('keyword'));
 		$this->db->or_like('angkatan', $this->input->post('keyword'));
 		return $this->db->get('mahasiswa')->result_array();
-	}
-
-	public function count(): int {
-		return $this->db->get('mahasiswa')->num_rows();
 	}
 
 	/**
